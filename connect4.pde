@@ -10,12 +10,16 @@ int num =0;
 String str_num = "";
 
 void setup(){
-  size(1080,720);
+  fullScreen();
 }
 
 void draw(){
   chooseGridSize(); 
-  drawGrid(); 
+  if(rows > 20 || rows < 4&&rows!=0 || columns > 20 || columns < 4&&columns!=0){
+    text(" dimensions are invalid, choose new numbers press space to reset", width/2, height /2 - 200);
+  }
+  else{drawGrid();}
+   
 }
 
 void chooseGridSize(){
@@ -24,9 +28,13 @@ void chooseGridSize(){
       background(0,0,0);
       fill(255); 
     if(rowsChosen == false){
-         text("choose number of rows press enter to confirm", width/2, height/2);
+         text("choose number of rows press enter to confirm, number must be greater than 4 and less than 20", width/2, height/2);
          text("rows : " + rows, width / 2 , height/2+100);
+         
+       
+       
      }
+     
      else{
         if(columnsChosen == false){
           text( "choose number of columns press enter to confirm", width/2, height/2);
@@ -34,10 +42,22 @@ void chooseGridSize(){
             
         }
      }
+   
   }
-}
+ 
+      
+    
+    
+    }
+  
+  
+
   
 void keyPressed(){
+   if(key==' '){
+     reset();
+   
+   }
    if(gridSizeChosen == false){
     if(rowsChosen == false){
       if( key >= '0' && key <= '9' ){
@@ -82,8 +102,14 @@ void drawGrid(){
   }
 }
 
+void reset(){
+  clear();
+  resolutionChosen = false;
+  gridSizeChosen = false;
+  rowsChosen = false;
+  columnsChosen = false;
+  rows = 0;
+  columns = 0;
 
-  
- 
 
-  
+}
