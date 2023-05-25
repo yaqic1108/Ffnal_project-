@@ -2,10 +2,10 @@ boolean resolutionChosen = false;
 boolean gridSizeChosen = false;
 boolean rowsChosen = false;
 boolean columnsChosen = false;
-int rows = 0;
-int columns = 0;
+public static int rows = 0;
+public static int columns = 0;
 
-int[][] board = new int[rows][columns];
+public static int[][] board = new int[rows][columns];
 int num =0;
 String str_num = "";
 
@@ -71,6 +71,7 @@ void keyPressed(){
 }
 
 void drawGrid(){
+  //draws grid based on chooseGridSize()
   if (rows != 0 && columns != 0){
     background(62, 144, 255);
     for (int j = (height/(2*rows)); j <= height; j += (height/rows)){
@@ -82,8 +83,17 @@ void drawGrid(){
   }
 }
 
+void reset(){
+  clear();
+  resolutionChosen = false;
+  gridSizeChosen = false;
+  rowsChosen = false;
+  columnsChosen = false;
+  rows = 0;
+  columns = 0;
+}
 
-  
- 
-
-  
+Player playerOne = new Player(#FFFFFF);
+playerOne.placeGamePiece(); 
+//Player playerOne = new Player(); 
+//playerOne.Player(color(#F70707)); 
