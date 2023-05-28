@@ -1,26 +1,27 @@
 class Board{
-  private color gridColor = #98A8BF; 
-  private int gridX; 
-  private int gridY; 
+  private color gridColor;// = #98A8BF; 
+  private float gridX; 
+  private float gridY; 
   
-  Board (int x, int y){
+  Board (float x, float y){
+    gridColor = 250;
     gridX = x; 
     gridY = y; 
   }
   
-  void setColor(int Color){
+  void setColor(color Color){
     gridColor = Color; 
   }
   
-  int getGridX(){
+  float getGridX(){
     return gridX; 
   }
   
-  int getGridY(){
+  float getGridY(){
     return gridY;
   }
   
-  int getColor(){
+  color getColor(){
     return gridColor;
   }
  

@@ -4,32 +4,32 @@ boolean rowsChosen = false;
 boolean columnsChosen = false;
 static int rows = 0;
 static int columns = 0;
+static int rowSize;
+static int columnSize;
 
-Board[][] board = new Board[rows][columns];
+//private Board[][] board = new Board[rows][columns];
 int num = 0;
 String str_num = "";
 
-Player playerOne;// = new Player(#F51111);
-Player playerTwo;// = new Player(#F0F511);
+private Board[][] board;
+private Player playerOne;// = new Player(#F51111);
+private Player playerTwo;// = new Player(#F0F511);
 
 void setup(){
   size(1080,720); 
-  playerOne = new Player(#F51111);
-  playerTwo = new Player(#F0F511);
-   
-  for (int i = 0; i < rows; i++){
-    for(int j = 0; j < columns; j++){
-      board[i][j] = new Board (((j + (1/2))*(width/columns)), ((i + (1/2))*(height/rows)));
-    }
-  }
+  
+  playerOne = new Player(color(350));
+  playerTwo = new Player(color(500));
 }
 
 void draw(){
-  chooseGridSize(); 
-  drawGrid();  
-  
-  if (playerOne.win != 2 && playerTwo.win != 2){
-    playGame();
+  if (!gridSizeChosen){
+    chooseGridSize(); 
+  }
+  if (rows != 0 && columns != 0){
+      rowSize = height/rows; 
+  columnSize = width/columns; 
+    drawGrid();  
   }
 }
 
@@ -80,70 +80,60 @@ void keyPressed(){
            str_num = "";
            println(num);
            columnsChosen = true;
+           initializeBoard();
          }
       }
     }
    }
 }
 
+void initializeBoard(){
+  board = new Board[rows][columns];
+  
+  for (int r = 0; r < rows; r++){
+    for(int c = 0; c < columns; c++){
+      board[r][c] = new Board ((float)((c + 0.5)*(width/columns)), (float)((r + 0.5)*(height/rows)));
+    }
+  }
+}
+
 void drawGrid(){
   //draws grid based on chooseGridSize()
-  if (rows != 0 && columns != 0){
   background(62, 144, 255);
-    //for (int j = (height/(2*rows)); j <= height; j += (height/rows)){
-    //  for (int i = (width/(2*columns)); i <= width; i += (width/columns)){
-    //    fill(#98A8BF); 
-    //    circle (, j, (height/rows)-20); 
-    //  }
-    //}
   for(int r = 0; r < rows; r++) {
-                for(int c = 0; c < columns; c++) {
-                    fill(board[r][c].getColor());
-                    circle(board[r][c].getGridX(), board[r][c].getGridY(), (height/rows)-20);
-                }
-            }
+      for(int c = 0; c < columns; c++) {
+          fill(board[r][c].getColor());
+          if (rows > columns || rows == columns){
+            circle(board[r][c].getGridX(), board[r][c].getGridY(), (height/rows)-20);
+          }else if (rows < columns) {
+            circle(board[r][c].getGridX(), board[r][c].getGridY(), (width/columns)-20);
+          }
+      }
   }
-  
-  //if (rows != 0 && columns != 0){
-  //  background(62, 144, 255);
-  //  for (int j = (height/(2*rows)); j <= height; j += (height/rows)){
-  //    for (int i = (width/(2*columns)); i <= width; i += (width/columns)){
-  //      fill(#98A8BF); 
-  //      circle (i, j, (height/rows)-20); 
-  //    }
-  //  }
-  //}
 }
-
-//public void mouseClicked(){
-//  if (columnsChosen == true){
-//    fill (#FFFFFF); 
-//    circle(3, 4, 500);
-//    if (pOneTurn() == true){
-//      playerOne.placeGamePiece();
-//      playerOne.turn ++; 
-//    }else{
-//      playerTwo.placeGamePiece();
-//      playerTwo.turn ++; 
-//    }
-//  }
-//}
 
 boolean pOneTurn(){
-  return playerOne.turn == playerTwo.turn;
+  if (playerOne.turn == 0 && playerTwo.turn == 0){
+    return true; 
+  }else{
+    return playerOne.turn == playerTwo.turn;
+  }
 }
 
-void playGame(){
+void mouseReleased(){
   if (gridSizeChosen == true){
     if (pOneTurn() == true){
-      playerOne.placeGamePiece();
+      playerOne.placeGamePiece(board);
+      //drawGrid();
       playerOne.turn ++; 
     }else{
-      playerTwo.placeGamePiece();
+      playerTwo.placeGamePiece(board);
+      //drawGrid();
       playerTwo.turn ++; 
     }
   }
 }
+
 
 void reset(){
   clear();
