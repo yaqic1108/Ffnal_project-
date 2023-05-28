@@ -3,11 +3,22 @@ public class Player{
   int win = 0; 
   int turn = 0; 
   
-  double columnSize = (double) (width/Connect4.columns);
-  double rowSize = (double) (height/Connect4.rows); 
+  double columnSize;
+  double rowSize; 
   
-  public void Player(color playerColor){
+  //void columnRow(){
+  //  if (Connect4.columns > 0 && Connect4.rows > 0){
+  //    columnSize = (double) (width/Connect4.columns);
+  //    rowSize = (double) (height/Connect4.rows);
+  //  }
+  //}
+  
+  Player(color playerColor){
     this.playerColor = playerColor; 
+  }
+  
+  void checkSpace(){
+    
   }
   
   public void placeGamePiece(){
@@ -17,20 +28,22 @@ public class Player{
     //  circle ((float)(columnSize/2), (float)rowSize, (float)(height/Connect4.rows)-20); 
     //}else if (2 * columnSize < mouseX && mouseX < columnSize * 3){
     //  fill(#98A8BF); 
-    //  circle ((float)((columnSize/2)3), (float)rowSize, (float)(height/Connect4.rows)-20); 
-    //}else if (3 * columnSize < mouseX && mouseX < columnSize * 4)
+    //  circle ((float)((columnSize/2)*3), (float)rowSize, (float)(height/Connect4.rows)-20); 
+    //}//else if (3 * columnSize < mouseX && mouseX < columnSize * 4)
+    
+    
     int column = 0; 
     for (double i = 0; i < (width - columnSize); i += columnSize){
       for (double j = columnSize; i < width; i += columnSize){
         if (i < mouseX && mouseX < j){
           column = (int)(j/rowSize);
-          for (int z = 0; z < Connect4.board.length; z++){
-            if (Connect4.board[z][column] == 0){
+          //for (int z = 0; z < Connect4.board.length; z++){
+          //  if (Connect4.board[z][column] == 0){
               fill(playerColor); 
-              circle ((float)column, (float)z, (float)(height/Connect4.rows)-20);
-              Connect4.board[z][column] = 1; 
-            }
-          }
+              circle ((float)column, (float)45, (float)(height/Connect4.rows)-20);
+              //Connect4.board[z][column] = 1; 
+        //    }
+        //  }
         }
       }
     }
