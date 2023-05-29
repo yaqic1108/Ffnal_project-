@@ -8,6 +8,7 @@ int columns = 0;
 int[][] board = new int[rows][columns];
 int num =0;
 String str_num = "";
+boolean winnerChosen = false;
 
 void setup(){
   fullScreen();
@@ -108,8 +109,69 @@ void reset(){
   gridSizeChosen = false;
   rowsChosen = false;
   columnsChosen = false;
+  winnerChosen = false;
   rows = 0;
   columns = 0;
 
 
 }
+
+//void getWinner(){
+//  int inARow = 0;
+//  // vertical winner chosen
+//  for(int x = 0; x < rows; x++){
+//    for(int y = 0; y < columns - 1; y++){
+//      if(y==0){
+//        inARow++;
+//      }
+//      if(board[x][y] == board[x][y+1]){
+//        inARow++;
+//        if(inARow == 4){
+//          winnerChosen = true;
+//        }
+//      }
+//      else{
+//        inARow = 0;
+//      }
+     
+    
+//    }
+//  }
+//  // horizontal winner
+//  for(int y = 0; y < rows; y++){
+//    for(int x = 0; x < columns - 1; y++){
+//      if(x==0){
+//        inARow++;
+//      }
+//      if(board[x][y] == board[x+1][y]){
+//        inARow++;
+//        if(inARow == 4){
+//          winnerChosen = true;
+//        }
+//      }
+//      else{
+//        inARow = 0;
+//      }
+     
+    
+//    }
+//  }
+  
+//  for(int x = 0; x < rows; x++){
+//    for(int y = 0; y < columns ; y++){
+//      for(int d = -1; d <=1; d+=2){
+          
+      
+//      }
+    
+    
+//    }
+  
+//  }
+
+//}
+
+
+
+
+  
