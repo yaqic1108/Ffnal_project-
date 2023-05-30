@@ -2,26 +2,45 @@ boolean resolutionChosen = false;
 boolean gridSizeChosen = false;
 boolean rowsChosen = false;
 boolean columnsChosen = false;
-int rows = 0;
-int columns = 0;
+static int rows = 0;
+static int columns = 0;
+static int rowSize;
+static int columnSize;
 
-int[][] board = new int[rows][columns];
-int num =0;
+//private Board[][] board = new Board[rows][columns];
+int num = 0;
 String str_num = "";
-boolean winnerChosen = false;
+
+private Board[][] board;
+private Player playerOne;// = new Player(#F51111);
+private Player playerTwo;// = new Player(#F0F511);
 
 void setup(){
-  fullScreen();
+  size(1080,720); 
+  
+
 }
 
 void draw(){
-  chooseGridSize(); 
-  if(rows > 20 || rows < 4&&rows!=0 || columns > 20 || columns < 4&&columns!=0){
-    text(" dimensions are invalid, choose new numbers press space to reset", width/2, height /2 - 200);
+  if (!gridSizeChosen){
+    chooseGridSize(); 
   }
-  else{drawGrid();}
-   
+  else if(gridSizeChosen){
+  if (rows != 0 && columns != 0){
+    if(rows <= 20 && columns <=20){
+      rowSize = height/rows; 
+  columnSize = width/columns; 
+    drawGrid();  
+  }
+    else{
+      background(0,0,0);
+      text("invalid size please reset with space", width/2, height/2);
+    
+    }
+  }
+  }
 }
+
 
 void chooseGridSize(){
   //allowing user to choose grid size
@@ -29,30 +48,18 @@ void chooseGridSize(){
       background(0,0,0);
       fill(255); 
     if(rowsChosen == false){
-         text("choose number of rows press enter to confirm, number must be greater than 4 and less than 20", width/2, height/2);
+         text("choose number of rows press enter to confirm", width/2, height/2);
          text("rows : " + rows, width / 2 , height/2+100);
-         
-       
-       
      }
-     
      else{
         if(columnsChosen == false){
           text( "choose number of columns press enter to confirm", width/2, height/2);
           text("rows : " + rows + "  columns :" + columns, width / 2 , height/2+100);
             
-        }
+        }  
      }
-   
   }
- 
-      
-    
-    
-    }
-  
-  
-
+}
   
 void keyPressed(){
    if(key==' '){
@@ -85,23 +92,68 @@ void keyPressed(){
            str_num = "";
            println(num);
            columnsChosen = true;
+           initializeBoard();
+           gridSizeChosen = true;  
+           playerOne = new Player(color(350),rows,columns);
+            playerTwo = new Player(color(500),rows,columns);
          }
       }
     }
    }
 }
 
-void drawGrid(){
-  if (rows != 0 && columns != 0){
-    background(62, 144, 255);
-    for (int j = (height/(2*rows)); j <= height; j += (height/rows)){
-      for (int i = (width/(2*columns)); i <= width; i += (width/columns)){
-        fill(#98A8BF); 
-        circle (i, j, (height/rows)-20); 
-      }
+void initializeBoard(){
+  board = new Board[rows][columns];
+  
+  for (int r = 0; r < rows; r++){
+    for(int c = 0; c < columns; c++){
+      board[r][c] = new Board ((float)((c+0.5)*(width/columns)), (float)((r+0.5)*(height/rows)));
     }
   }
 }
+
+void drawGrid(){
+  //draws grid based on chooseGridSize()
+  background(62, 144, 255);
+  for(int r = 0; r < rows; r++) {
+      for(int c = 0; c < columns; c++) {
+          fill(board[r][c].getColor());
+          if (rows > columns || rows == columns){
+            circle(board[r][c].getGridX(), board[r][c].getGridY(), (height/rows)-20);
+          }else if (rows < columns) {
+            circle(board[r][c].getGridX(), board[r][c].getGridY(), (width/columns)-20);
+          }
+      }
+  }
+}
+
+boolean pOneTurn(){
+  if (playerOne.turn == 0 && playerTwo.turn == 0){
+    return true; 
+  }else{
+    return playerOne.turn == playerTwo.turn;
+  }
+}
+
+void mousePressed(){
+  println(str(gridSizeChosen));
+  
+  if (gridSizeChosen == true){
+    println(str(pOneTurn()));
+     println(playerOne.turn);
+    if (pOneTurn() == true){
+      playerOne.placeGamePiece(board);
+      //drawGrid();
+      playerOne.addTurn(); 
+    }else{
+      
+      playerTwo.placeGamePiece(board);
+      //drawGrid();
+      playerTwo.addTurn();
+    }
+  }
+}
+
 
 void reset(){
   clear();
@@ -109,69 +161,6 @@ void reset(){
   gridSizeChosen = false;
   rowsChosen = false;
   columnsChosen = false;
-  winnerChosen = false;
   rows = 0;
   columns = 0;
-
-
 }
-
-//void getWinner(){
-//  int inARow = 0;
-//  // vertical winner chosen
-//  for(int x = 0; x < rows; x++){
-//    for(int y = 0; y < columns - 1; y++){
-//      if(y==0){
-//        inARow++;
-//      }
-//      if(board[x][y] == board[x][y+1]){
-//        inARow++;
-//        if(inARow == 4){
-//          winnerChosen = true;
-//        }
-//      }
-//      else{
-//        inARow = 0;
-//      }
-     
-    
-//    }
-//  }
-//  // horizontal winner
-//  for(int y = 0; y < rows; y++){
-//    for(int x = 0; x < columns - 1; y++){
-//      if(x==0){
-//        inARow++;
-//      }
-//      if(board[x][y] == board[x+1][y]){
-//        inARow++;
-//        if(inARow == 4){
-//          winnerChosen = true;
-//        }
-//      }
-//      else{
-//        inARow = 0;
-//      }
-     
-    
-//    }
-//  }
-  
-//  for(int x = 0; x < rows; x++){
-//    for(int y = 0; y < columns ; y++){
-//      for(int d = -1; d <=1; d+=2){
-          
-      
-//      }
-    
-    
-//    }
-  
-//  }
-
-//}
-
-
-
-
-  
