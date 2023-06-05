@@ -28,7 +28,8 @@ public class Player{
     //  }
     //}
      for(int c =0; c <= board[0].length-1; c++){
-      if((c==rows-1 &&mouseX>board[0][c].getGridX()- width/rows/2&& mouseX<width)){
+      //if((c==rows-1 &&mouseX>board[0][c].getGridX()- width/rows/2&& mouseX<width)){
+        if((c == board[0].length-1 &&mouseX>board[0][c].getGridX()- width/rows/2&& mouseX<width)){
         for (int r = board.length-1; r >= 0; r--){
           if (board[r][c].getColor() == 250){
             board[r][c].setColor(playerColor);
@@ -37,7 +38,7 @@ public class Player{
         }
         break;
         
-      
+       
       }}
     for (int c = 0; c < board[0].length-1; c++){
       if ((mouseX > board[0][c].getGridX() - width/rows/2 && mouseX < board[0][c+1].getGridX()- width/rows/2)){

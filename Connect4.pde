@@ -120,7 +120,7 @@ void drawGrid(){
           
           fill(board[r][c].getColor());
           
-          if (rows > columns || rows == columns){
+          if (rows > columns || rows == columns || rows == columns-1){
             circle(board[r][c].getGridX(), board[r][c].getGridY(), (height/rows)-20);
           }else if (rows < columns) {
             circle(board[r][c].getGridX(), board[r][c].getGridY(), (width/columns)-20);
@@ -154,8 +154,15 @@ void mousePressed(){
       playerTwo.addTurn();
     }
   }
+  checkWin(); 
 }
 
+void checkWin(){
+  for (int c = 0; c <= board[0].length -1;  c++){
+    for (int r = 0; r <= board.length; r++){
+    }
+  }
+}
 
 void reset(){
   clear();
