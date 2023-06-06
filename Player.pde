@@ -7,6 +7,10 @@ public class Player{
     this.playerColor = playerColor; 
   }
   
+  void getColor(){
+    return playerColor; 
+  }
+  
   public void placeGamePiece(Board[][] board){
     if (mouseX > 0 && mouseX < board[0][0].getGridX()){
       for (int r = board.length-1; r >= 0; r--){

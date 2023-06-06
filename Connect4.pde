@@ -6,6 +6,7 @@ static int rows = 0;
 static int columns = 0;
 static int rowSize;
 static int columnSize;
+int round; 
 
 //private Board[][] board = new Board[rows][columns];
 int num = 0;
@@ -18,19 +19,29 @@ private Player playerTwo;// = new Player(#F0F511);
 void setup(){
   size(1080,720); 
   
-  playerOne = new Player(color(350));
-  playerTwo = new Player(color(500));
+
 }
 
 void draw(){
   if (!gridSizeChosen){
     chooseGridSize(); 
   }
-  if (rows != 0 && columns != 0){
-      rowSize = height/rows; 
-  columnSize = width/columns; 
-    drawGrid();  
+  else if(gridSizeChosen){
+    if (rows != 0 && columns != 0){
+      if(rows <= 20 && columns <=20){
+        rowSize = height/rows; 
+    columnSize = width/columns; 
+      drawGrid();  
+    }
+      else{
+        background(0,0,0);
+        text("invalid size please reset with space", width/2, height/2);
+      
+      }
+    }
   }
+  
+  winner(); 
 }
 
 
@@ -48,12 +59,16 @@ void chooseGridSize(){
           text( "choose number of columns press enter to confirm", width/2, height/2);
           text("rows : " + rows + "  columns :" + columns, width / 2 , height/2+100);
             
-        }
+        }  
      }
   }
 }
   
 void keyPressed(){
+   if(key==' '){
+     reset();
+   
+   }
    if(gridSizeChosen == false){
     if(rowsChosen == false){
       if( key >= '0' && key <= '9' ){
@@ -81,6 +96,9 @@ void keyPressed(){
            println(num);
            columnsChosen = true;
            initializeBoard();
+           gridSizeChosen = true;  
+           playerOne = new Player(color(255,255,51),rows,columns);
+            playerTwo = new Player(color(255,0,43),rows,columns);
          }
       }
     }
@@ -92,7 +110,7 @@ void initializeBoard(){
   
   for (int r = 0; r < rows; r++){
     for(int c = 0; c < columns; c++){
-      board[r][c] = new Board ((float)((c + 0.5)*(width/columns)), (float)((r + 0.5)*(height/rows)));
+      board[r][c] = new Board ((float)((c+0.5)*(width/columns)), (float)((r+0.5)*(height/rows)));
     }
   }
 }
@@ -102,8 +120,10 @@ void drawGrid(){
   background(62, 144, 255);
   for(int r = 0; r < rows; r++) {
       for(int c = 0; c < columns; c++) {
+          
           fill(board[r][c].getColor());
-          if (rows > columns || rows == columns){
+          
+          if (rows > columns || rows == columns || rows == columns-1){
             circle(board[r][c].getGridX(), board[r][c].getGridY(), (height/rows)-20);
           }else if (rows < columns) {
             circle(board[r][c].getGridX(), board[r][c].getGridY(), (width/columns)-20);
@@ -120,20 +140,42 @@ boolean pOneTurn(){
   }
 }
 
-void mouseReleased(){
+void mousePressed(){
+  println(str(gridSizeChosen));
+  
   if (gridSizeChosen == true){
+    println(str(pOneTurn()));
+     println(playerOne.turn);
     if (pOneTurn() == true){
       playerOne.placeGamePiece(board);
       //drawGrid();
-      playerOne.turn ++; 
+      playerOne.addTurn(); 
     }else{
+      
       playerTwo.placeGamePiece(board);
       //drawGrid();
-      playerTwo.turn ++; 
+      playerTwo.addTurn();
     }
+  }
+  checkWin(); 
+}
+
+void winRound(color Color){
+  background (0, 0, 0); 
+  if (Color == playerOne.getColor()){
+    text("Player 1 Wins", width/2, height/2);
+  }else if (Color == playerTwo.getColor()){
+    text("Player Two Wins", width/2, height/2);
   }
 }
 
+void winThree(){
+  background (0, 0, 0); 
+  if (playerOne.win == 2){ 
+    text("Player One Wins", width/2, height/2); 
+  }else if (playerTwo.win == 2){
+    text("Player Two Wins", width/2, heught/2);
+}
 
 void reset(){
   clear();
