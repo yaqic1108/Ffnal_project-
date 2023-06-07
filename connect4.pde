@@ -2,6 +2,8 @@ boolean resolutionChosen = false;
 boolean gridSizeChosen = false;
 boolean rowsChosen = false;
 boolean columnsChosen = false;
+boolean winnerChosen = false;
+
 static int rows = 0;
 static int columns = 0;
 static int rowSize;
@@ -27,7 +29,7 @@ void draw(){
   }
   else if(gridSizeChosen){
   if (rows != 0 && columns != 0){
-    if(rows <= 20 && columns <=20){
+    if(rows <= 20 && columns <=20 && rows >=4 && columns >=4){
       rowSize = height/rows; 
   columnSize = width/columns; 
     drawGrid();  
@@ -75,7 +77,7 @@ void keyPressed(){
         num = int( str_num );
         rows = num; 
         str_num = "";
-        println( num );
+        println("rows "+ num );
         rowsChosen = true;
       }
 
@@ -90,12 +92,12 @@ void keyPressed(){
            num = int(str_num);
            columns = num;
            str_num = "";
-           println(num);
+           println("columns " + num);
            columnsChosen = true;
            initializeBoard();
            gridSizeChosen = true;  
-           playerOne = new Player(color(350),rows,columns);
-            playerTwo = new Player(color(500),rows,columns);
+           playerOne = new Player(color(255,255,51),rows,columns);
+            playerTwo = new Player(color(255,0,43),rows,columns);
          }
       }
     }
@@ -117,7 +119,9 @@ void drawGrid(){
   background(62, 144, 255);
   for(int r = 0; r < rows; r++) {
       for(int c = 0; c < columns; c++) {
+          
           fill(board[r][c].getColor());
+          
           if (rows > columns || rows == columns){
             circle(board[r][c].getGridX(), board[r][c].getGridY(), (height/rows)-20);
           }else if (rows < columns) {
@@ -136,11 +140,10 @@ boolean pOneTurn(){
 }
 
 void mousePressed(){
-  println(str(gridSizeChosen));
+  
   
   if (gridSizeChosen == true){
-    println(str(pOneTurn()));
-     println(playerOne.turn);
+    
     if (pOneTurn() == true){
       playerOne.placeGamePiece(board);
       //drawGrid();
@@ -151,16 +154,112 @@ void mousePressed(){
       //drawGrid();
       playerTwo.addTurn();
     }
+    
+    checkWinner();
   }
 }
+Player whoIsTheWinner(color c){
+  if(c == playerOne.getColor()){
+    print("yellowWins");
+    playerOne.addWin();
+    return playerOne;
+  }
+  if(c == playerTwo.getColor()){
+    print("redWins");
+    playerTwo.addWin();
+    return playerTwo;
+  }
+  return null;
+}
+boolean checkWinner(){
+    //check rows 
+    for(int x = 0; x < rows; x++){
+      int counter = 0;
+      color curColor = 0;
+       
+      for(int  y =0 ; y < columns; y++){
+        if(counter == 0){
+          curColor = board[x][y].getColor();
+        }  
+        if( board[x][y].getColor()!=250&&board[x][y].getColor() == curColor){
+          counter ++;
+          if(counter == 4){
+           whoIsTheWinner(curColor);
+     
+            return true;
+          }
+        }
+        else if(board[x][y].getColor()!=250&&board[x][y].getColor()!=curColor){
+          counter = 0;
+          curColor = 0;
+        
+        }
+        
+      }    
+    }
+ //check columns   
+    for(int y = 0; y < columns; y++){
+      int counter = 0;
+      color curColor = 0;
+       
+      for(int  x =0 ; x < rows; x++){
+        if(counter == 0){
+          curColor = board[x][y].getColor();
+        }  
+        if( board[x][y].getColor()!=250&&board[x][y].getColor() == curColor){
+          counter ++;
+          if(counter == 4){
+            whoIsTheWinner(curColor);
+         
+            return true;
+          }
+        }
+        else if(board[x][y].getColor()!=250&&board[x][y].getColor()!=curColor){
+          counter = 0;
+          curColor = 0;
+        
+        }
+        
+      }    
+    }
+// check diagonal
+for(int x = 0; x < rows; x++){
+   int counter = 0;
+   color curColor = 0;
+    int diag = 0;
+  for(int y = 0; y < columns; y++){
+     if(counter == 0){
+       curColor = board[diag][y].getColor();
+     } 
+     if(board[diag][y].getColor()!=250&&board[diag][y].getColor() == curColor){
+       counter++;
+       if(counter==4){
+         whoIsTheWinner(curColor);
+         return true;
+       }
+     }
+     else if(board[diag][y].getColor()!=250&&board[diag][y].getColor()!=curColor){
+       counter = 0;
+       curColor = 0;
+     }
+      diag++;
+    }
+  
+  }
+  return false;
+}
+
+ 
+    
 
 
 void reset(){
-  clear();
-  resolutionChosen = false;
+  
+
   gridSizeChosen = false;
   rowsChosen = false;
   columnsChosen = false;
+  winnerChosen = false;
   rows = 0;
   columns = 0;
 }
