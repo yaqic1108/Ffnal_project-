@@ -223,29 +223,44 @@ boolean checkWinner(){
       }    
     }
 // check diagonal
-for(int x = 0; x < rows; x++){
-   int counter = 0;
-   color curColor = 0;
-    int diag = 0;
-  for(int y = 0; y < columns; y++){
-     if(counter == 0){
-       curColor = board[diag][y].getColor();
-     } 
-     if(board[diag][y].getColor()!=250&&board[diag][y].getColor() == curColor){
-       counter++;
-       if(counter==4){
-         whoIsTheWinner(curColor);
-         return true;
-       }
+
+for(int x = 0; x < rows-3; x++){
+  color curColor = 0;
+  for(int y = 0; y < columns-3; y++){
+     if(board[x][y].getColor()!=250){
+        curColor = board[x][y].getColor();
+        
+        
      }
-     else if(board[diag][y].getColor()!=250&&board[diag][y].getColor()!=curColor){
-       counter = 0;
-       curColor = 0;
-     }
-      diag++;
+      if(board[x+1][y+1].getColor() == curColor &&
+           board[x+2][y+2].getColor() == curColor &&
+           board[x+3][y+3].getColor() == curColor){
+             whoIsTheWinner(curColor);
+             return true;
+           
+           }
+     
     }
   
   }
+ for(int x = rows -1; x >=3; x--){
+   color curColor = 0;
+   for(int y = 0; y < columns-3; y++){
+     if(board[x][y].getColor() !=250){
+       curColor = board[x][y].getColor();
+     }
+     if(board[x-1][y+1].getColor() == curColor &&
+     board[x-2][y+2].getColor() == curColor &&
+     board[x-3][y+3].getColor() == curColor){
+       whoIsTheWinner(curColor);
+       return true;
+     
+     }
+     
+     
+ }    
+ 
+ } 
   return false;
 }
 
@@ -263,3 +278,4 @@ void reset(){
   rows = 0;
   columns = 0;
 }
+
