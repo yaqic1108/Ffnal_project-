@@ -2,6 +2,7 @@ class Board{
   private color gridColor;// = #98A8BF; 
   private float gridX; 
   private float gridY; 
+
   
   Board (float x, float y){
     gridColor = 250;
@@ -24,6 +25,7 @@ class Board{
   color getColor(){
     return gridColor;
   }
+  
   
   
  
