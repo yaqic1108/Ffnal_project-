@@ -3,6 +3,8 @@ boolean gridSizeChosen = false;
 boolean rowsChosen = false;
 boolean columnsChosen = false;
 boolean winnerChosen = false;
+boolean playerAssigned = false;
+String winnerString = "";
 
 static int rows = 0;
 static int columns = 0;
@@ -16,6 +18,7 @@ String str_num = "";
 private Board[][] board;
 private Player playerOne;// = new Player(#F51111);
 private Player playerTwo;// = new Player(#F0F511);
+private Player tie;
 
 void setup(){
   size(1080,720); 
@@ -24,23 +27,30 @@ void setup(){
 }
 
 void draw(){
-  if (!gridSizeChosen){
-    chooseGridSize(); 
-  }
-  else if(gridSizeChosen){
-  if (rows != 0 && columns != 0){
-    if(rows <= 20 && columns <=20 && rows >=4 && columns >=4){
-      rowSize = height/rows; 
-  columnSize = width/columns; 
-    drawGrid();  
-  }
-    else{
-      background(0,0,0);
-      text("invalid size please reset with space", width/2, height/2);
-    
+  
+    if (!gridSizeChosen){
+      chooseGridSize(); 
+     
     }
-  }
-  }
+    else if(gridSizeChosen){
+       
+    if (rows != 0 && columns != 0){
+      if(rows <= 20 && columns <=20 && rows >=4 && columns >=4){
+        rowSize = height/rows; 
+    columnSize = width/columns; 
+      drawGrid();  
+    }
+      else{
+        background(0,0,0);
+        text("invalid size please reset with space", width/2, height/2);
+      
+      }
+    }
+    }
+if(winnerChosen){
+  drawWinsScreen();
+}
+
 }
 
 
@@ -96,8 +106,17 @@ void keyPressed(){
            columnsChosen = true;
            initializeBoard();
            gridSizeChosen = true;  
-           playerOne = new Player(color(255,255,51),rows,columns);
+           if(playerAssigned == false){
+            playerOne = new Player(color(255,255,51),rows,columns);
             playerTwo = new Player(color(255,0,43),rows,columns);
+            tie = new Player(color(250), 0,0);
+            playerAssigned = true;
+           }
+           if(playerAssigned == true){
+             playerOne.changeDim(rows, columns);
+             playerTwo.changeDim(rows,columns);
+           
+           }
          }
       }
     }
@@ -130,6 +149,14 @@ void drawGrid(){
       }
   }
 }
+void drawWinsScreen(){
+  background(255,255,255);
+  fill(0);
+  text(winnerString, width/2, height/2);
+  text("yellow wins : " +  playerOne.getWins(),width/2 ,height/2 + 100);
+  text("red wins : " + playerTwo.getWins(), width/2, height/2 + 200);
+
+}
 
 boolean pOneTurn(){
   if (playerOne.turn == 0 && playerTwo.turn == 0){
@@ -155,22 +182,46 @@ void mousePressed(){
       playerTwo.addTurn();
     }
     
-    checkWinner();
+    boolean c = checkWinner();
+    if (c==true){
+      winnerChosen = true;
+      }
   }
 }
+
+
+
 Player whoIsTheWinner(color c){
   if(c == playerOne.getColor()){
     print("yellowWins");
+    winnerString = "the winner is yellow!";
     playerOne.addWin();
     return playerOne;
   }
   if(c == playerTwo.getColor()){
     print("redWins");
+    winnerString = "The winner is red!";
     playerTwo.addWin();
     return playerTwo;
   }
+   int totalParts = rows*columns;
+ int counter = 0;
+ for(int x = 0 ; x< rows; x++){
+   for(int y = 0; y<rows; y++){
+     counter++; 
+     if(counter== totalParts){
+       print("tie");
+       winnerString = "It's a tie!";
+       return tie;
+       
+     }
+   }
+ }
+  
   return null;
 }
+
+
 boolean checkWinner(){
     //check rows 
     for(int x = 0; x < rows; x++){
@@ -184,7 +235,9 @@ boolean checkWinner(){
         if( board[x][y].getColor()!=250&&board[x][y].getColor() == curColor){
           counter ++;
           if(counter == 4){
-           whoIsTheWinner(curColor);
+            if (winnerChosen == false){
+          whoIsTheWinner(curColor);
+       }
      
             return true;
           }
@@ -209,7 +262,9 @@ boolean checkWinner(){
         if( board[x][y].getColor()!=250&&board[x][y].getColor() == curColor){
           counter ++;
           if(counter == 4){
-            whoIsTheWinner(curColor);
+             if (winnerChosen == false){
+          whoIsTheWinner(curColor);
+       }
          
             return true;
           }
@@ -235,7 +290,9 @@ for(int x = 0; x < rows-3; x++){
       if(board[x+1][y+1].getColor() == curColor &&
            board[x+2][y+2].getColor() == curColor &&
            board[x+3][y+3].getColor() == curColor){
-             whoIsTheWinner(curColor);
+              if (winnerChosen == false){
+          whoIsTheWinner(curColor);
+       }
              return true;
            
            }
@@ -252,7 +309,10 @@ for(int x = 0; x < rows-3; x++){
      if(board[x-1][y+1].getColor() == curColor &&
      board[x-2][y+2].getColor() == curColor &&
      board[x-3][y+3].getColor() == curColor){
-       whoIsTheWinner(curColor);
+       if (winnerChosen == false){
+          whoIsTheWinner(curColor);
+       }
+      
        return true;
      
      }
@@ -260,9 +320,11 @@ for(int x = 0; x < rows-3; x++){
      
  }    
  
- } 
+ }
+
   return false;
 }
+
 
  
     
@@ -277,5 +339,6 @@ void reset(){
   winnerChosen = false;
   rows = 0;
   columns = 0;
+  playerOne.resetTurn();
+  playerTwo.resetTurn();
 }
-
