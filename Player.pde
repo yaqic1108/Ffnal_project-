@@ -1,6 +1,6 @@
 public class Player{
   color playerColor; 
-  int win = 0; 
+private  int win = 0; 
   int turn = 0; 
   int rows= 0;
   int columns = 0;
@@ -10,15 +10,27 @@ public class Player{
     this.rows = rows;
     this.columns = columns;
   }
+  public void changeDim(int r, int c){
+      rows = r;
+       columns = c;
+  }
+
   
   public void addTurn(){
     turn++;
+  }
+  public void resetTurn(){
+    turn = 0;
   }
   public color getColor(){
     return playerColor;
   }
   public void addWin(){
     win++;
+  }
+  public int getWins(){
+    return win;
+  
   }
   
   public void placeGamePiece(Board[][] board){
