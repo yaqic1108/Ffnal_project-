@@ -141,7 +141,7 @@
             
             fill(board[r][c].getColor());
             
-            if (rows > columns || rows == columns){
+            if (rows > columns || rows == columns||rows == columns-1){
               circle(board[r][c].getGridX(), board[r][c].getGridY(), (height/rows)-20);
             }else if (rows < columns) {
               circle(board[r][c].getGridX(), board[r][c].getGridY(), (width/columns)-20);
@@ -331,14 +331,15 @@
   
   
   void reset(){
-    
-  
+    if(gridSizeChosen){
+    playerOne.resetTurn();
+      playerTwo.resetTurn();
+    }
     gridSizeChosen = false;
     rowsChosen = false;
     columnsChosen = false;
     winnerChosen = false;
     rows = 0;
     columns = 0;
-    playerOne.resetTurn();
-    playerTwo.resetTurn();
+      
   }
