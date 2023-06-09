@@ -232,7 +232,7 @@
          
         for(int  y =0 ; y < columns; y++){
           if(counter == 0){
-            counter++;
+            
             curColor = board[x][y].getColor();
           }  
           if( board[x][y].getColor()!=250&&board[x][y].getColor() == curColor){
