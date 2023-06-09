@@ -35,8 +35,8 @@ public class Player{
   
   public void placeGamePiece(Board[][] board){
 
-     for(int c =0; c <= board[0].length-1; c++){
-      if((c==rows-1 && mouseX>board[0][c].getGridX()- width/rows/2&& mouseX<width)){
+for(int c =0; c <= board[0].length-1; c++){
+      if((c==columns-1 &&mouseX>board[0][c].getGridX()- width/columns/2&& mouseX<width)){
         for (int r = board.length-1; r >= 0; r--){
           if (board[r][c].getColor() == 250){
             board[r][c].setColor(playerColor);

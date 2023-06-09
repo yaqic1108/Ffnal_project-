@@ -5,6 +5,8 @@ boolean columnsChosen = false;
 boolean winnerChosen = false;
 boolean playerAssigned = false;
 String winnerString = "";
+int presses = 0;
+int totalParts;
 
 static int rows = 0;
 static int columns = 0;
@@ -185,12 +187,26 @@ Player whoIsTheWinner(color c){
     playerTwo.addWin();
     return playerTwo;
   }
+  //int totalParts = rows * columns; 
+  //int counter = 0; 
+  //for (int x = 0; x < rows; x++){
+  //  for (int y = 0; y < columns; y++){
+  //    if (board[x][y].getColor() != 250){
+  //      counter++; 
+  //    }
+  //  }
+  //}
+  //if (counter == totalParts){
+  //  print ("tie"); 
+  //  winnerString = "It's a tie!"; 
+  //  return tie; 
+  //}
  int totalParts = rows*columns;
  int counter = 0;
  for(int x = 0 ; x< rows; x++){
-   for(int y = 0; y<rows; y++){
+   for(int y = 0; y < columns ; y++){
      counter++; 
-     if(counter== totalParts){
+     if(counter == totalParts){
        print("tie");
        winnerString = "It's a tie!";
        return tie;
@@ -202,61 +218,65 @@ Player whoIsTheWinner(color c){
 }
 
 boolean checkWinner(){
-    //check rows 
-    for(int x = 0; x < rows; x++){
-      int counter = 0;
-      color curColor = 0;
-       
-      for(int  y =0 ; y < columns; y++){
-        if(counter == 0){
-          curColor = board[x][y].getColor();
-        }  
-        if( board[x][y].getColor()!=250&&board[x][y].getColor() == curColor){
-          counter ++;
-          if(counter == 4){
-            if (winnerChosen == false){
-          whoIsTheWinner(curColor);
-       }
-     
-            return true;
-          }
-        }
-        else if(board[x][y].getColor()!=250&&board[x][y].getColor()!=curColor){
-          counter = 0;
-          curColor = 0;
-        
-        }
-        
-      }    
-    }
- //check columns   
-    for(int y = 0; y < columns; y++){
-      int counter = 0;
-      color curColor = 0;
-       
-      for(int  x =0 ; x < rows; x++){
-        if(counter == 0){
-          curColor = board[x][y].getColor();
-        }  
-        if( board[x][y].getColor()!=250&&board[x][y].getColor() == curColor){
-          counter ++;
-          if(counter == 4){
-             if (winnerChosen == false){
-          whoIsTheWinner(curColor);
-       }
+      //check rows 
+      for(int x = 0; x < rows; x++){
+        int counter = 0;
+        color curColor = 0;
          
-            return true;
+        for(int  y =0 ; y < columns; y++){
+          if(counter == 0){
+            counter++;
+            curColor = board[x][y].getColor();
+          }  
+          if( board[x][y].getColor()!=250&&board[x][y].getColor() == curColor){
+            counter ++;
+            
+            if(counter == 4){
+             
+              if (winnerChosen == false){
+                
+            whoIsTheWinner(curColor);
+         }
+       
+              return true;
+            }
           }
-        }
-        else if(board[x][y].getColor()!=250&&board[x][y].getColor()!=curColor){
-          counter = 0;
-          curColor = 0;
-        
-        }
-        
-      }    
-    }
-// check diagonal
+          else if(board[x][y].getColor()!=curColor){
+            counter = 0;
+            curColor = board[x][y].getColor();
+          
+          }
+          
+        }    
+      }
+   //check columns   
+      for(int y = 0; y < columns; y++){
+        int counter = 0;
+        color curColor = 0;
+         
+        for(int  x =0 ; x < rows; x++){
+          if(counter == 0){
+            curColor = board[x][y].getColor();
+          }  
+          if( board[x][y].getColor()!=250&&board[x][y].getColor() == curColor){
+            counter ++;
+            if(counter == 4){
+               if (winnerChosen == false){
+            whoIsTheWinner(curColor);
+         }
+           
+              return true;
+            }
+          }
+          else if(board[x][y].getColor()!=250&&board[x][y].getColor()!=curColor){
+            counter = 0;
+            curColor = 0;
+          
+          }
+          
+        }    
+      }
+  // check diagonal
   
   for(int x = 0; x < rows-3; x++){
     color curColor = 0;
@@ -264,42 +284,50 @@ boolean checkWinner(){
        if(board[x][y].getColor()!=250){
           curColor = board[x][y].getColor();
           
-        
+          
        }
-      if(board[x+1][y+1].getColor() == curColor &&
-           board[x+2][y+2].getColor() == curColor &&
-           board[x+3][y+3].getColor() == curColor){
-           if (winnerChosen == false){
+        if(board[x+1][y+1].getColor() == curColor &&
+             board[x+2][y+2].getColor() == curColor &&
+             board[x+3][y+3].getColor() == curColor){
+                if (winnerChosen == false){
             whoIsTheWinner(curColor);
-           }
-             return true;
-       }
+         }
+               return true;
+             
+             }
+       
+      }
+    
     }
-  }
- for(int x = rows -1; x >=3; x--){
-   color curColor = 0;
-   for(int y = 0; y < columns-3; y++){
-     if(board[x][y].getColor() !=250){
-       curColor = board[x][y].getColor();
-     }
-     if(board[x-1][y+1].getColor() == curColor &&
-     board[x-2][y+2].getColor() == curColor &&
-     board[x-3][y+3].getColor() == curColor){
-       if (winnerChosen == false){
-          whoIsTheWinner(curColor);
+   for(int x = rows -1; x >=3; x--){
+     color curColor = 0;
+     for(int y = 0; y < columns-3; y++){
+       if(board[x][y].getColor() !=250){
+         curColor = board[x][y].getColor();
        }
-      
-       return true;
-     
-     }
-     
-     
- }    
- 
- }
-
-  return false;
-}
+       if(board[x-1][y+1].getColor() == curColor &&
+       board[x-2][y+2].getColor() == curColor &&
+       board[x-3][y+3].getColor() == curColor){
+         if (winnerChosen == false){
+            whoIsTheWinner(curColor);
+         }
+        
+         return true;
+       
+       }
+       
+       
+   }    
+   
+   }
+    int totalParts = rows*columns;
+   if(presses == totalParts){
+     whoIsTheWinner(0);
+     return true;
+   }
+  
+    return false;
+  }
 
 void reset(){
     gridSizeChosen = false;
