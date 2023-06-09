@@ -5,6 +5,8 @@
   boolean winnerChosen = false;
   boolean playerAssigned = false;
   String winnerString = "";
+  int presses = 0;
+  int totalParts;
   
   static int rows = 0;
   static int columns = 0;
@@ -74,6 +76,7 @@
   }
     
   void keyPressed(){
+    presses++;
      if(key==' '){
        reset();
      
@@ -106,6 +109,7 @@
              columnsChosen = true;
              initializeBoard();
              gridSizeChosen = true;  
+            
              if(playerAssigned == false){
               playerOne = new Player(color(255,255,51),rows,columns);
               playerTwo = new Player(color(255,0,43),rows,columns);
@@ -204,19 +208,17 @@
       playerTwo.addWin();
       return playerTwo;
     }
-     int totalParts = rows*columns;
-   int counter = 0;
-   for(int x = 0 ; x< rows; x++){
-     for(int y = 0; y<rows; y++){
-       counter++; 
-       if(counter== totalParts){
+     
+   
+ 
+       if(presses== totalParts){
          print("tie");
          winnerString = "It's a tie!";
          return tie;
          
        }
-     }
-   }
+     
+   
     
     return null;
   }
@@ -234,17 +236,20 @@
           }  
           if( board[x][y].getColor()!=250&&board[x][y].getColor() == curColor){
             counter ++;
+            
             if(counter == 4){
+             
               if (winnerChosen == false){
+                
             whoIsTheWinner(curColor);
          }
        
               return true;
             }
           }
-          else if(board[x][y].getColor()!=250&&board[x][y].getColor()!=curColor){
+          else if(board[x][y].getColor()!=curColor){
             counter = 0;
-            curColor = 0;
+            curColor = board[x][y].getColor();
           
           }
           
@@ -320,6 +325,11 @@
        
    }    
    
+   }
+    int totalParts = rows*columns;
+   if(presses == totalParts){
+     whoIsTheWinner(0);
+     return true;
    }
   
     return false;
