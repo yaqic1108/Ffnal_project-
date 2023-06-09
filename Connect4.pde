@@ -94,7 +94,7 @@ void keyPressed(){
            columnsChosen = true;
            initializeBoard();
            gridSizeChosen = true;  
-          if(playerAssigned == false){
+         if(playerAssigned == false){
             playerOne = new Player(color(255,255,51),rows,columns);
             playerTwo = new Player(color(255,0,43),rows,columns);
             tie = new Player(color(250), 0,0);
@@ -128,7 +128,7 @@ void drawGrid(){
           
           fill(board[r][c].getColor());
           
-          if (rows > columns || rows == columns || rows == columns-1){
+          if (rows > columns || rows == columns || rows == columns - 1){
             circle(board[r][c].getGridX(), board[r][c].getGridY(), (height/rows)-20);
           }else if (rows < columns) {
             circle(board[r][c].getGridX(), board[r][c].getGridY(), (width/columns)-20);
